@@ -4,6 +4,14 @@
   "description": "React / Next.js 向けの軽量リッチテキストエディタ。ツールバー付きの contentEditable で、値を innerHTML として受け渡しする。",
   "license": "MIT",
   "author": "ebi-lock",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ebi-lock/open-doc-editor.git"
+  },
+  "homepage": "https://github.com/Ebi-lock/open-doc-editor#readme",
+  "bugs": {
+    "url": "https://github.com/Ebi-lock/open-doc-editor/issues"
+  },
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -38,10 +46,16 @@
   "keywords": [
     "react",
     "nextjs",
-    "editor",
+    "rich-text-editor",
     "wysiwyg",
+    "wysiwyg-editor",
     "contenteditable",
-    "rich-text"
+    "editor",
+    "text-editor",
+    "html",
+    "react-component",
+    "typescript",
+    "japanese"
   ],
   "peerDependencies": {
     "react": ">=18",
