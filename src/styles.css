@@ -1,0 +1,204 @@
+/*
+ * open-doc-editor
+ * 色は CSS 変数で上書きできる。.oe-root か、その親要素で --oe-* を指定する。
+ */
+.oe-root {
+  --oe-bg: #faf6ef;
+  --oe-ink: #3a2f2a;
+  --oe-muted: #6b5f58;
+  --oe-line: #e2d6c2;
+  --oe-line-strong: #cdbda6;
+  --oe-focus: #b9a69b;
+  --oe-toolbar-bg: #877269;
+  --oe-toolbar-ink: #ede3d1;
+  --oe-toolbar-hover: rgba(237, 227, 209, 0.14);
+  --oe-toolbar-divider: rgba(237, 227, 209, 0.22);
+  --oe-popover-bg: #faf6ef;
+  --oe-cell-active: #e9ded5;
+  --oe-cell-active-line: #877269;
+  --oe-radius: 12px;
+  --oe-shadow: 0 12px 30px -14px rgba(58, 47, 42, 0.45);
+  --oe-sticky-top: 12px;
+  --oe-min-height: 12em;
+  --oe-font: inherit;
+  --oe-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--oe-ink);
+  font-family: var(--oe-font);
+}
+
+@media (prefers-color-scheme: dark) {
+  .oe-root:not([data-theme='light']) {
+    --oe-bg: #2a2320;
+    --oe-ink: #ede3d1;
+    --oe-muted: #b3a79c;
+    --oe-line: #3d342f;
+    --oe-line-strong: #5a4e47;
+    --oe-focus: #877269;
+    --oe-popover-bg: #2a2320;
+    --oe-cell-active: #4a3d36;
+    --oe-cell-active-line: #c4b0a5;
+  }
+}
+
+/* ツールバー */
+.oe-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  width: max-content;
+  max-width: 100%;
+  padding: 5px;
+  background: var(--oe-toolbar-bg);
+  border-radius: 14px;
+  box-shadow: var(--oe-shadow);
+}
+
+.oe-sticky > .oe-toolbar {
+  position: sticky;
+  top: var(--oe-sticky-top);
+  z-index: 30;
+}
+
+.oe-toolGroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.oe-toolGroup + .oe-toolGroup {
+  border-left: 1px solid var(--oe-toolbar-divider);
+  padding-left: 4px;
+}
+
+.oe-toolGroup button {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--oe-toolbar-ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+}
+
+.oe-toolGroup button:hover:not(:disabled) {
+  background: var(--oe-toolbar-hover);
+}
+
+.oe-toolGroup button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.oe-toolGroup button[aria-pressed='true'],
+.oe-toolGroup button[aria-expanded='true'] {
+  background: var(--oe-toolbar-ink);
+  color: var(--oe-toolbar-bg);
+}
+
+.oe-toolGroup button:focus-visible {
+  outline: 2px solid var(--oe-toolbar-ink);
+  outline-offset: 1px;
+}
+
+/* 表のサイズ選択 */
+.oe-tableWrap {
+  position: relative;
+}
+
+.oe-tableGrid {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: -4px;
+  z-index: 35;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 10px;
+  background: var(--oe-popover-bg);
+  border: 1px solid var(--oe-line);
+  border-radius: var(--oe-radius);
+  box-shadow: var(--oe-shadow);
+  overflow-x: auto;
+}
+
+.oe-tableGridLabel {
+  font-family: var(--oe-mono);
+  font-size: 12px;
+  color: var(--oe-muted);
+  margin-bottom: 6px;
+}
+
+.oe-tableGridCells {
+  display: grid;
+  grid-auto-rows: 14px;
+  gap: 2px;
+}
+
+.oe-tableGridCell {
+  border: 1px solid var(--oe-line-strong);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.oe-tableGridCell.isActive {
+  background: var(--oe-cell-active);
+  border-color: var(--oe-cell-active-line);
+}
+
+/* 編集エリア */
+.oe-area {
+  position: relative;
+  min-height: var(--oe-min-height);
+  padding: 16px 20px;
+  background: var(--oe-bg);
+  border: 1px solid var(--oe-line);
+  border-radius: var(--oe-radius);
+  line-height: 1.9;
+  outline: none;
+  overflow-wrap: anywhere;
+}
+
+.oe-area:focus {
+  box-shadow: 0 0 0 2px var(--oe-focus);
+}
+
+.oe-area[data-empty]::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  inset: 16px 20px auto;
+  color: var(--oe-muted);
+  pointer-events: none;
+}
+
+.oe-area p {
+  margin: 0 0 0.35em;
+}
+
+/* 本文中の表・画像 (表示側でも同じ class を使える) */
+.oe-area table,
+.oe-table {
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.oe-area td,
+.oe-table td {
+  border: 1px solid var(--oe-line-strong);
+  padding: 6px 10px;
+  min-width: 40px;
+}
+
+.oe-img img {
+  max-width: 100%;
+  border-radius: 6px;
+}
